@@ -16,7 +16,7 @@ import javax.annotation.PreDestroy;
  */
 public class KafkaListener {
 
-    @Value("${idmanager-server.baseUrl}")
+    @Value("${spring.kafka.bootstrap-servers}")
     private String idmanagerBaseUrl;
 
 
