@@ -3,6 +3,7 @@ package org.poem.listener;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.poem.data.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -32,7 +33,8 @@ public class KafkaListener {
         executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(Runtime.getRuntime().availableProcessors() * 2);
         executor.setMaxPoolSize(100);
-        executor.setThreadNamePrefix("async-executor-");
+        executor.setThreadNamePrefix("KafkaListener-");
+        executor.initialize();
     }
 
     /**
@@ -51,17 +53,12 @@ public class KafkaListener {
     @org.springframework.kafka.annotation.KafkaListener(topics = {"TEST", "LOGGER"})
     public void listen(ConsumerRecord<String, String> record) {
         logger.info("Kafka-enter:********");
+        logger.info("Kafka-enter for record is:" + JSONObject.toJSONString(record.value()));
         String topic = record.topic();
-        String taskId = record.key();
         JSONObject response = JSON.parseObject(record.value());
-        if (taskId == null) {
-            taskId = response.getString("taskId");
-        }
-        if (taskId == null) {
-            logger.error("task id not found,message content is:" + record.value());
-            return;
-        }
-        logger.info("jobId:" + taskId + "  响应 ：" + JSON.toJSONString(record.value()));
+        Message<Object> message = new Message<>();
+         message = JSONObject.parseObject(record.value(), message.getClass());
+        logger.info("  响应 ：" + message);
 
 
         switch (topic) {

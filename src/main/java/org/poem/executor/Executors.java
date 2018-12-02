@@ -7,9 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import java.util.concurrent.Callable;
 
 /**
  * 线程
@@ -23,18 +21,23 @@ public class Executors {
     /**
      * 线程处理
      */
-    private static ThreadPoolTaskExecutor executor;
+    private static ThreadPoolTaskExecutor executor= new ThreadPoolTaskExecutor();
 
 
+    public static void init(){
+        logger.info("init executors");
+        Executors.executor.setCorePoolSize(Runtime.getRuntime().availableProcessors() * 2);
+        Executors.executor.setMaxPoolSize(100);
+        Executors.executor.setThreadNamePrefix("kafka-");
+        //必须初始化
+        //java.lang.IllegalStateException: ThreadPoolTaskExecutor not initialized
+        Executors.executor.initialize();
+    }
     /**
      * 初始化之前执行
      */
-    @PostConstruct
-    private void initExecutor() {
-        executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(Runtime.getRuntime().availableProcessors() * 2);
-        executor.setMaxPoolSize(100);
-        executor.setThreadNamePrefix("kafka-");
+    static {
+        init();
     }
 
     /**
