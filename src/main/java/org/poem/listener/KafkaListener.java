@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSONObject;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import javax.annotation.PostConstruct;
@@ -15,9 +14,6 @@ import javax.annotation.PreDestroy;
  * @author poem
  */
 public class KafkaListener {
-
-    @Value("${spring.kafka.bootstrap-servers}")
-    private String idmanagerBaseUrl;
 
 
     private static final Logger logger = LoggerFactory.getLogger(KafkaListener.class);
