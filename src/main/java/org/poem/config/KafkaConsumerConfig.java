@@ -54,6 +54,10 @@ public class KafkaConsumerConfig {
     }
 
 
+    /**
+     * 配置
+     * @return
+     */
     private Map<String, Object> consumerConfigs() {
         Map<String, Object> propsMap = new HashMap<>();
         propsMap.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, servers);
@@ -67,9 +71,9 @@ public class KafkaConsumerConfig {
         return propsMap;
     }
 
-    @Bean
-    public KafkaListener listener() {
-        return new KafkaListener();
-    }
+//    @Bean
+//    public KafkaListener listener() {
+//        return new KafkaListener();
+//    }
 
 }
