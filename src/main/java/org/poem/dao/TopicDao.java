@@ -12,6 +12,6 @@ import java.util.List;
 public class TopicDao {
 
     public List<String> top() {
-        return Arrays.asList("TOP", "TEST", "LOGGER");
+        return Arrays.asList("TOP", "TEST", "LOGGER","DaiDai");
     }
 }
